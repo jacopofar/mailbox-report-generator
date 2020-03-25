@@ -1,0 +1,6 @@
+# mbox and compressed files and folder to process
+*.tgz
+*.mbox
+Takeout/
+# output report
+report.html
