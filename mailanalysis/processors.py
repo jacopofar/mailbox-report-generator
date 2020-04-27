@@ -42,6 +42,8 @@ class DowHourHeatmap(Processor):
 
     The resulting report snippet shows how many messages there were in a
     specific day of the week and hour, e.g. Tuesday at 15
+
+    The hour is in UTC.
     """
 
     def __init__(self):
