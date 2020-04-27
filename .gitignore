@@ -3,4 +3,4 @@
 *.mbox
 Takeout/
 # output report
-report.html
+*.html

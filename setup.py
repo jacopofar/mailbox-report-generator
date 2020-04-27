@@ -20,4 +20,10 @@ setup(
             'mbox-analyze = mailanalysis.__main__:main',
         ]
     },
+    extras_require={
+        'dev': [
+            'pytest',
+            'pytest-cov'
+        ]
+    }
 )
