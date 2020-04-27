@@ -4,3 +4,6 @@
 Takeout/
 # output report
 *.html
+
+# pytest coverage
+.coverage

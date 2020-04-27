@@ -20,5 +20,4 @@ Then, run `make setup-venv` to create a local environment in the `.venv` folder,
 Delete the whole cloned folder, the above virtualenv is created in `.venv` inside it
 
 ## TODO
-- [ ] Tests
 - [ ] Screenshot in the README
