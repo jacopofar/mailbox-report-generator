@@ -37,8 +37,7 @@ def main():
 
     with open(REPORT_FILE, 'w') as f:
         # mega ugly :) but enough to see the result an iterate
-        f.write('''
-        <html>
+        f.write('''<html>
 <head><meta charset="utf-8" /></head>
 <body>
     <div>
