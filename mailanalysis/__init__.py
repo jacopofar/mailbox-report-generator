@@ -1,5 +1,6 @@
 import mailbox
 from pathlib import Path
+from textwrap import dedent
 
 from tqdm import tqdm
 
@@ -31,4 +32,6 @@ def process_mbox(path: Path, processors: [Processor]):
         for processor in processors:
             processor.process(message)
 
-    return "".join(p.report_snippet() for p in processors)
+    return "\n".join(
+        f'<section>{dedent(p.report_snippet())}</section>'
+        for p in processors)

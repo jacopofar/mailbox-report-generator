@@ -7,6 +7,7 @@ from mailanalysis.processors import (
     ActivityOverTime,
     DowHourHeatmap,
     MostFrequentAddresses,
+    ReportHeader,
 )
 
 REPORT_FILE = 'report_mail.html'
@@ -24,9 +25,10 @@ def main():
     )
     args = parser.parse_args()
     processors = [
+        ReportHeader(args.mbox_file),
         DowHourHeatmap(),
         ActivityOverTime(),
-        MostFrequentAddresses()
+        MostFrequentAddresses(),
     ]
     report_content = mailanalysis.process_mbox(
         args.mbox_file,

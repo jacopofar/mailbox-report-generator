@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import timezone
+from datetime import timezone, date
 from email.utils import parsedate_to_datetime, parseaddr
 from mailbox import Message
 
@@ -7,6 +7,15 @@ import plotly.graph_objects as go
 
 
 class Processor:
+    """Base class for a mail report processor.
+
+    This report generator is desgned as a pipeline of processors,
+    each processor is created and observes all the messages, then generates
+    its own piece of HTML.
+
+    All these snippets are put together with some essential boilerplate to
+    form a complete report.
+    """
     def process(self, msg: Message):
         """Process a message, integrating it in the current state.
 
@@ -109,8 +118,7 @@ class ActivityOverTime(Processor):
 
 
 class MostFrequentAddresses(Processor):
-    """Processor for the most frequent addresses
-    """
+    """Processor for the most frequent addresses."""
 
     def __init__(self):
         self.address_count = Counter()
@@ -141,3 +149,24 @@ class MostFrequentAddresses(Processor):
         )
 
         return fig.to_html(full_html=False, include_plotlyjs=False)
+
+
+class ReportHeader(Processor):
+    """Processor for the report introduction text."""
+
+    def __init__(self, filename):
+        self.filename = filename
+        self.count = 0
+
+    def process(self, msg):
+        self.count += 1
+
+    def report_snippet(self):
+        return f'''
+        <section style="padding: 1em;font-family: sans-serif;">
+            <h3>Report from {self.filename}</h3>
+            <p>Report generated on {date.today().isoformat()}</p>
+            <p>Messages present in the file: {self.count:,.0f}.
+            This includes sent messages and spam.<p>
+        <section>
+        '''

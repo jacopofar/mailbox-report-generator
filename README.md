@@ -17,5 +17,4 @@ Then, run `make setup-venv` to create a local environment in the `.venv` folder,
 
 ## TODO
 - [ ] Tests
-- [ ] Use proper HTML template
 - [ ] Screenshot in the README
