@@ -1,4 +1,6 @@
 import argparse
+from pathlib import Path
+import webbrowser
 
 import mailanalysis
 from mailanalysis.processors import (
@@ -6,6 +8,8 @@ from mailanalysis.processors import (
     DowHourHeatmap,
     MostFrequentAddresses,
 )
+
+REPORT_FILE = 'report_mail.html'
 
 
 def main():
@@ -29,7 +33,7 @@ def main():
         processors,
     )
 
-    with open('report.html', 'w') as f:
+    with open(REPORT_FILE, 'w') as f:
         # mega ugly :) but enough to see the result an iterate
         f.write('''
         <html>
@@ -44,6 +48,9 @@ def main():
         ''')
         f.write(report_content)
         f.write('</body></html>')
+    target = f'file://{Path(REPORT_FILE).absolute()}'
+    print(f'Report at {target}')
+    webbrowser.open(target)
 
 
 if __name__ == "__main__":
