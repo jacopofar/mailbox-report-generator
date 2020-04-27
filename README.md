@@ -2,12 +2,14 @@
 
 This is a script that analyzes an mbox mail export, such as the one provided by Google Takeout from a Gmail box, and produces a report on the content.
 
+![an heatmap representation of number of mail per day and hour](heatmap.png)
+![an interactive chart showing the mail activity per day](timeline.png)
+
 ## Reports
 
 * received mails over hour of the day and day of the week
 * mail per day over time
 * most active addresses
-* TODO average mail length
 
 ## Usage
 
@@ -19,5 +21,3 @@ Then, run `make setup-venv` to create a local environment in the `.venv` folder,
 
 Delete the whole cloned folder, the above virtualenv is created in `.venv` inside it
 
-## TODO
-- [ ] Screenshot in the README
