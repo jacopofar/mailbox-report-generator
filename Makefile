@@ -9,4 +9,4 @@ test-setup: setup-venv
 	.venv/bin/python3 -m pip install -e .[dev]
 
 test:
-	.venv/bin/python3 -m pytest
+	.venv/bin/python3 -m pytest -vv --cov=mailanalysis
