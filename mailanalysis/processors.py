@@ -92,7 +92,7 @@ class DowHourHeatmap(Processor):
         fig = go.Figure(
             data=go.Heatmap(
                 # trick to hide the extra double label
-                hoverlabel = dict(namelength=0),
+                hoverlabel=dict(namelength=0),
                 hovertemplate="%{y} at %{x}: %{z} messages",
                 x=[h for h in range(24)],
                 y=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
