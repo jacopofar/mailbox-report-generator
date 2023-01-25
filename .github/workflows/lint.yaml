@@ -1,4 +1,4 @@
-name: MyPy
+name: Lint
 
 on: [push]
 
@@ -22,5 +22,6 @@ jobs:
         enable-pep582: true  # Enable PEP 582 package loading globally
     - name: Install dependencies
       run: pdm install
-    - name: Run MyPy in strict mode
-      run: pdm run mypy
+  test:
+    - name: Test
+      run: pdm run test_with_coverage
