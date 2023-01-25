@@ -25,4 +25,4 @@ jobs:
     - name: Run MyPy in strict mode
       run: pdm run mypy
     - name: Lint
-      run: pdm run black --check
+      run: pdm run black --check mailanalysis

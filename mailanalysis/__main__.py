@@ -3,8 +3,12 @@ import webbrowser
 from pathlib import Path
 
 import mailanalysis
-from mailanalysis.processors import (ActivityOverTime, DowHourHeatmap,
-                                     MostFrequentAddresses, ReportHeader)
+from mailanalysis.processors import (
+    ActivityOverTime,
+    DowHourHeatmap,
+    MostFrequentAddresses,
+    ReportHeader,
+)
 
 REPORT_FILE = "report_mail.html"
 
