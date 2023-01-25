@@ -5,6 +5,8 @@ dev = [
     "black>=22.12.0",
     "types-tqdm>=4.64.7.11",
     "isort>=5.11.4",
+    "pytest>=7.2.1",
+    "pytest-cov>=4.0.0",
 ]
 
 [project]
@@ -37,7 +39,12 @@ ignore_missing_imports = true
 mypy = {cmd = [
     "mypy",
     "--strict",
-    # this is to avoid the __init__.py
-    "--explicit-package-bases",
     "mailanalysis",
+]}
+test_with_coverage = {cmd = [
+    "pytest",
+    "--cov=mailanalysis",
+    "--cov-report",
+    "html",
+    "tests/",
 ]}
