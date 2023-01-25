@@ -1,4 +1,4 @@
-name: Lint
+name: Type check and linting
 
 on: [push]
 
@@ -22,6 +22,7 @@ jobs:
         enable-pep582: true  # Enable PEP 582 package loading globally
     - name: Install dependencies
       run: pdm install
-  test:
-    - name: Test
-      run: pdm run test_with_coverage
+    - name: Run MyPy in strict mode
+      run: pdm run mypy
+    - name: Lint
+      run: pdm run black --check
