@@ -1,12 +1,27 @@
-.PHONY: setup-venv test-setup test
+.PHONY: help
+help:
+	@echo 'Usage: make <subcommand>'
+	@echo ''
+	@echo 'Subcommands:'
+	@echo '    install       Install locally'
 
-setup-venv:
-	rm -rf .venv
-	python3 -m venv .venv
-	.venv/bin/python3 -m pip install .
+.PHONY: install
+install:
+	python3 -m pip install .
 
-test-setup: setup-venv
-	.venv/bin/python3 -m pip install -e .[dev]
 
+.PHONY: test
 test:
-	.venv/bin/python3 -m pytest -vv --cov=mailanalysis
+	python3 -m pip install -e ".[testing]"
+	python3 -m pytest --cov=mailanalysis --cov-report html tests/
+
+.PHONY: test-fe
+test-fe:
+	cd frontend && npm install && npm test
+
+
+.PHONY: lint
+lint:
+	python3 -m pip install -e ".[testing]"
+	python3 -m black mailanalysis
+	python3 -m mypy --strict --explicit-package-bases mailanalysis

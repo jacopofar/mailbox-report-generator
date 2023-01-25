@@ -11,7 +11,7 @@ from mailanalysis.processors import Processor
 
 
 def process_mbox(path: Path, processors: list[Processor]) -> str:
-    """Process a mailbox file usign the given processors.
+    """Process a mailbox file using the given processors.
 
     Parameters
     ----------

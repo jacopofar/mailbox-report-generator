@@ -1,0 +1,26 @@
+name: MyPy
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10"]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.5.0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - uses: pdm-project/setup-pdm@v3
+      name: Setup PDM
+      with:
+        python-version: ${{ matrix.python-version }}
+        enable-pep582: true  # Enable PEP 582 package loading globally
+    - name: Install dependencies
+      run: pdm install
+    - name: Run MyPy in strict mode
+      run: pdm run mypy

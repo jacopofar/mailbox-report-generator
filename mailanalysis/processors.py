@@ -6,6 +6,9 @@ from mailbox import Message
 
 import plotly.graph_objects as go
 
+# sometimes the mbox files contain weird date formats
+# here some cases either ignored or worked around
+
 # 05-08-2005
 DD_MM_YYYY = re.compile(r"\d{2}-\d{2}-\d{4}")
 # 2016-08-03 18:21:32.174623604 +0000 UTC
@@ -13,6 +16,12 @@ ALMOST_ISO = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)? \+0+ UTC")
 
 
 def parse_mail_date(datestr: str) -> datetime:
+    """Parse a date string as a datetime object.
+
+    This handles some quirks found in real mbox files, the RFC regarding the
+    date format is not always followed it seems.
+
+    """
     if DD_MM_YYYY.match(datestr):
         raise TypeError(f"Missing time in string {datestr}")
     if ALMOST_ISO.match(datestr):
@@ -25,7 +34,7 @@ def parse_mail_date(datestr: str) -> datetime:
 class Processor:
     """Base class for a mail report processor.
 
-    This report generator is desgned as a pipeline of processors,
+    This report generator is designed as a pipeline of processors,
     each processor is created and observes all the messages, then generates
     its own piece of HTML.
 
@@ -82,7 +91,10 @@ class DowHourHeatmap(Processor):
         dow_hour = self.dow_hour
         fig = go.Figure(
             data=go.Heatmap(
-                x=[f"hour: {h}" for h in range(24)],
+                # trick to hide the extra double label
+                hoverlabel = dict(namelength=0),
+                hovertemplate="%{y} at %{x}: %{z} messages",
+                x=[h for h in range(24)],
                 y=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                 z=dow_hour,
             ),
