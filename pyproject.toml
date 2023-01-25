@@ -1,0 +1,43 @@
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=0.991",
+    "black>=22.12.0",
+    "types-tqdm>=4.64.7.11",
+    "isort>=5.11.4",
+]
+
+[project]
+name = "Mailbox_analysis"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Jacopo Farina", email = "jacopo1.farina@gmail.com"},
+]
+dependencies = [
+    "plotly==5.13.0",
+    "tqdm>=4.64.1",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+
+[[tool.mypy.overrides]]
+module = [
+    "plotly",
+    "plotly.graph_objects"
+]
+ignore_missing_imports = true
+
+[tool.pdm.scripts]
+mypy = {cmd = [
+    "mypy",
+    "--strict",
+    # this is to avoid the __init__.py
+    "--explicit-package-bases",
+    "mailanalysis",
+]}
