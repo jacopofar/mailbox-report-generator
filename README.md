@@ -1,4 +1,6 @@
 # Mbox mail analysis
+![test status](https://github.com/jacopofar/mailbox-analysis/actions/workflows/test.yaml/badge.svg)
+![test status](https://github.com/jacopofar/mailbox-analysis/actions/workflows/lint.yaml/badge.svg)
 
 This is a script that analyzes an **mbox** mail export, such as the one provided by Google Takeout from a Gmail box, and produces a report on the content.
 
