@@ -1,6 +1,6 @@
 import argparse
-from pathlib import Path
 import webbrowser
+from pathlib import Path
 
 import mailanalysis
 from mailanalysis.processors import (
@@ -10,18 +10,17 @@ from mailanalysis.processors import (
     ReportHeader,
 )
 
-REPORT_FILE = 'report_mail.html'
+REPORT_FILE = "report_mail.html"
 
 
-def main():
-
+def main() -> None:
     parser = argparse.ArgumentParser(
-        description='Generate a report on a Mailbox file content.'
+        description="Generate a report on a Mailbox file content."
     )
     parser.add_argument(
-        'mbox_file',
+        "mbox_file",
         type=str,
-        help='The mailbox (.mbox) file to analyze',
+        help="The mailbox (.mbox) file to analyze",
     )
     args = parser.parse_args()
     processors = [
@@ -35,9 +34,10 @@ def main():
         processors,
     )
 
-    with open(REPORT_FILE, 'w') as f:
-        # mega ugly :) but enough to see the result an iterate
-        f.write('''<html>
+    with open(REPORT_FILE, "w") as f:
+        # mega ugly :) but enough to see the result and iterate
+        f.write(
+            """<html>
 <head><meta charset="utf-8" /></head>
 <body>
     <div>
@@ -46,11 +46,12 @@ def main():
         window.PlotlyConfig = {MathJaxConfig: 'local'};
     </script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        ''')
+        """
+        )
         f.write(report_content)
-        f.write('</body></html>')
-    target = f'file://{Path(REPORT_FILE).absolute()}'
-    print(f'Report at {target}')
+        f.write("</body></html>")
+    target = f"file://{Path(REPORT_FILE).absolute()}"
+    print(f"Report at {target}")
     webbrowser.open(target)
 
 

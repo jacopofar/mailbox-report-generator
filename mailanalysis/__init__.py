@@ -10,8 +10,8 @@ from mailanalysis.processors import Processor
 # the generation for header and footer of the report
 
 
-def process_mbox(path: Path, processors: [Processor]):
-    """Process a mailbox file suign the given processors.
+def process_mbox(path: Path, processors: list[Processor]) -> str:
+    """Process a mailbox file usign the given processors.
 
     Parameters
     ----------
@@ -33,5 +33,5 @@ def process_mbox(path: Path, processors: [Processor]):
             processor.process(message)
 
     return "\n".join(
-        f'<section>{dedent(p.report_snippet())}</section>'
-        for p in processors)
+        f"<section>{dedent(p.report_snippet())}</section>" for p in processors
+    )

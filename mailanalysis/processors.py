@@ -1,9 +1,25 @@
+import re
 from collections import Counter
-from datetime import timezone, date
-from email.utils import parsedate_to_datetime, parseaddr
+from datetime import date, datetime, timezone
+from email.utils import parseaddr, parsedate_to_datetime
 from mailbox import Message
 
 import plotly.graph_objects as go
+
+# 05-08-2005
+DD_MM_YYYY = re.compile(r"\d{2}-\d{2}-\d{4}")
+# 2016-08-03 18:21:32.174623604 +0000 UTC
+ALMOST_ISO = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)? \+0+ UTC")
+
+
+def parse_mail_date(datestr: str) -> datetime:
+    if DD_MM_YYYY.match(datestr):
+        raise TypeError(f"Missing time in string {datestr}")
+    if ALMOST_ISO.match(datestr):
+        return datetime.strptime(datestr[:19], "%Y-%m-%d %H:%M:%S").astimezone(
+            timezone.utc
+        )
+    return parsedate_to_datetime(datestr).astimezone(timezone.utc)
 
 
 class Processor:
@@ -16,7 +32,8 @@ class Processor:
     All these snippets are put together with some essential boilerplate to
     form a complete report.
     """
-    def process(self, msg: Message):
+
+    def process(self, msg: Message) -> None:
         """Process a message, integrating it in the current state.
 
         Parameters
@@ -46,15 +63,14 @@ class DowHourHeatmap(Processor):
     The hour is in UTC.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.dow_hour = [[0 for _ in range(24)] for _ in range(7)]
 
-    def process(self, msg):
+    def process(self, msg: Message) -> None:
         if msg["Date"] is None:
             return
         try:
-            msg_date = parsedate_to_datetime(
-                msg["Date"]).astimezone(timezone.utc)
+            msg_date = parse_mail_date(msg["Date"])
         except TypeError:
             print(f'cannot parse date {msg["Date"]}')
             return
@@ -62,7 +78,7 @@ class DowHourHeatmap(Processor):
         dow = msg_date.weekday()
         self.dow_hour[dow][utc_hour] += 1
 
-    def report_snippet(self):
+    def report_snippet(self) -> str:
         dow_hour = self.dow_hour
         fig = go.Figure(
             data=go.Heatmap(
@@ -75,7 +91,7 @@ class DowHourHeatmap(Processor):
         # reading from top to bottom the days of the weekß
         fig.update_yaxes(autorange="reversed")
 
-        return fig.to_html(full_html=False, include_plotlyjs=False)
+        return fig.to_html(full_html=False, include_plotlyjs=False)  # type: ignore
 
 
 class ActivityOverTime(Processor):
@@ -84,31 +100,28 @@ class ActivityOverTime(Processor):
     It shows how many mails were exchanged per day over time.
     """
 
-    def __init__(self):
-        self.mail_per_day = {}
+    def __init__(self) -> None:
+        self.mail_per_day: dict[date, int] = {}
 
-    def process(self, msg):
+    def process(self, msg: Message) -> None:
         if msg["Date"] is None:
             return
         try:
-            msg_date = (
-                parsedate_to_datetime(
-                    msg["Date"]).astimezone(timezone.utc).date()
-            )
+            msg_date = parse_mail_date(msg["Date"]).date()
         except TypeError:
             print(f'cannot parse date {msg["Date"]}')
             return
         self.mail_per_day[msg_date] = self.mail_per_day.get(msg_date, 0) + 1
 
-    def report_snippet(self):
+    def report_snippet(self) -> str:
         dates = sorted(self.mail_per_day.keys())
         values = [self.mail_per_day[d] for d in dates]
         fig = go.Figure(
             data=go.Scatter(
                 x=dates,
                 y=values,
-                )
             )
+        )
         fig.update_layout(title="Messages by UTC hour and day of the week")
         # reading from top to bottom the days of the weekß
         fig.update_layout(
@@ -116,16 +129,16 @@ class ActivityOverTime(Processor):
             xaxis_rangeslider_visible=True,
         )
 
-        return fig.to_html(full_html=False, include_plotlyjs=False)
+        return fig.to_html(full_html=False, include_plotlyjs=False)  # type: ignore
 
 
 class MostFrequentAddresses(Processor):
     """Processor for the most frequent addresses."""
 
-    def __init__(self):
-        self.address_count = Counter()
+    def __init__(self) -> None:
+        self.address_count: Counter[str] = Counter()
 
-    def process(self, msg):
+    def process(self, msg: Message) -> None:
         if msg["From"] is None or msg["To"] is None:
             return
         # if the string is weird we get an Heade ronject, so by forcing
@@ -135,7 +148,7 @@ class MostFrequentAddresses(Processor):
         to_addr = parseaddr(str(msg["To"]))[1].lower()
         self.address_count.update([to_addr])
 
-    def report_snippet(self):
+    def report_snippet(self) -> str:
         # ignore address #1 assuming it is the mailbox owner
         top_addresses = self.address_count.most_common(20)[1:]
         labels, values = zip(*top_addresses)
@@ -143,32 +156,32 @@ class MostFrequentAddresses(Processor):
             data=go.Pie(
                 values=values,
                 labels=labels,
-                )
             )
+        )
         # reading from top to bottom the days of the weekß
         fig.update_layout(
             title_text="Most active addresses",
         )
 
-        return fig.to_html(full_html=False, include_plotlyjs=False)
+        return fig.to_html(full_html=False, include_plotlyjs=False)  # type: ignore
 
 
 class ReportHeader(Processor):
     """Processor for the report introduction text."""
 
-    def __init__(self, filename):
+    def __init__(self, filename: str) -> None:
         self.filename = filename
         self.count = 0
 
-    def process(self, msg):
+    def process(self, msg: Message) -> None:
         self.count += 1
 
-    def report_snippet(self):
-        return f'''
+    def report_snippet(self) -> str:
+        return f"""
         <section style="padding: 1em;font-family: sans-serif;">
             <h3>Report from {self.filename}</h3>
-            <p>Report generated on {date.today().isoformat()}</p>
+            <p>Report generated on {datetime.now().date().isoformat()}</p>
             <p>Messages present in the file: {self.count:,.0f}.
             This includes sent messages and spam.<p>
         <section>
-        '''
+        """
