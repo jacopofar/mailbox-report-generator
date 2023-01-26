@@ -16,7 +16,7 @@ class MostFrequentAddresses(Processor):
     def process(self, msg: Message) -> None:
         if msg["From"] is None or msg["To"] is None:
             return
-        # if the string is weird we get an Heade ronject, so by forcing
+        # if the string is weird we get an Header object, so by forcing
         # the conversion to str it goes back to a parsable mail address
         from_addr = parseaddr(str(msg["From"]))[1].lower()
         self.address_count.update([from_addr])
