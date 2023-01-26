@@ -1,5 +1,6 @@
 import argparse
 import importlib.resources as pkg_resources
+import logging
 import webbrowser
 from pathlib import Path
 
@@ -10,7 +11,11 @@ from mailanalysis.processors.activity_over_time import ActivityOverTime
 from mailanalysis.processors.dow_hour_heatmap import DowHourHeatmap
 from mailanalysis.processors.most_frequent_addresses import MostFrequentAddresses
 
-REPORT_FILE = "report_mail.html"
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s %(name)s %(message)s",
+)
 
 
 def main() -> None:
