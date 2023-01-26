@@ -27,6 +27,12 @@ def main() -> None:
         type=str,
         help="The mailbox (.mbox) file to analyze",
     )
+    parser.add_argument(
+        "--report_file",
+        type=str,
+        default="report_mail.html",
+        help="The report to produce",
+    )
     args = parser.parse_args()
     processors = [
         ReportHeader(args.mbox_file),
@@ -44,12 +50,12 @@ def main() -> None:
     footer_text = pkg_resources.read_text(
         mailanalysis.static_assets, "html_header.html"
     )
-    with open(REPORT_FILE, "w") as f:
+    with open(args.report_file, "w") as f:
         f.write(header_text)
         f.write(report_content)
         f.write(footer_text)
-    target = f"file://{Path(REPORT_FILE).absolute()}"
-    print(f"Report at {target}")
+    target = f"file://{Path(args.report_file).absolute()}"
+    logger.info(f"Report saved at {target}")
     webbrowser.open(target)
 
 
