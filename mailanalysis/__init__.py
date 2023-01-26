@@ -6,9 +6,6 @@ from tqdm import tqdm
 
 from mailanalysis.processors import Processor
 
-# TODO decide how to organize the report snippet and where to put
-# the generation for header and footer of the report
-
 
 def process_mbox(path: Path, processors: list[Processor]) -> str:
     """Process a mailbox file using the given processors.
