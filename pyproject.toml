@@ -1,7 +1,8 @@
 [project]
-name = "Mailbox_analysis"
-version = "0.1.0"
-description = ""
+name = "mailbox_report_generator"
+readme = "README.md"
+version = "0.1.1"
+description = "Tool to analyze a mbox mail dump"
 authors = [
     {name = "Jacopo Farina", email = "jacopo1.farina@gmail.com"},
 ]
@@ -61,3 +62,10 @@ test_with_coverage = {cmd = [
     "html",
     "tests/",
 ]}
+
+[project.urls]
+"Homepage" = "https://github.com/jacopofar/mailbox-report-generator"
+"Bug Tracker" = "https://github.com/jacopofar/mailbox-report-generator/issues"
+
+[project.scripts]
+generate_mbox_report = "mailanalysis.__main__:main"

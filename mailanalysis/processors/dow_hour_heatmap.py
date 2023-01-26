@@ -36,7 +36,12 @@ class DowHourHeatmap(Processor):
                 # trick to hide the extra double label
                 hoverlabel=dict(namelength=0),
                 hovertemplate="%{y} at %{x}: %{z} messages",
-                x=[h for h in range(24)],
+                x=(
+                    ["12 AM"]
+                    + [f"{h} AM" for h in range(1, 12)]
+                    + ["12 PM"]
+                    + [f"{h} PM" for h in range(1, 12)]
+                ),
                 y=["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                 z=dow_hour,
             ),
