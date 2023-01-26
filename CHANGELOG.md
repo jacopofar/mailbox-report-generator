@@ -9,5 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Display hours in AM/PM format
+- Improve display at different screen sizes
+- Add README to package description
+
+## [0.1.0] - 2023-01-26
+
+### Changed
+
 - Published as a package to Pypi
 
