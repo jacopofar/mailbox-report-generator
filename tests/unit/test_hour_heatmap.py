@@ -1,7 +1,7 @@
 
 from mailbox import Message
 
-from mailanalysis.processors import DowHourHeatmap
+from mailanalysis.processors.dow_hour_heatmap import DowHourHeatmap
 
 
 def test_happy_path():

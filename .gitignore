@@ -2,8 +2,8 @@
 *.tgz
 *.mbox
 Takeout/
-# output report
-*.html
+# default output report
+report_mail.html
 
 # pytest coverage
 .coverage

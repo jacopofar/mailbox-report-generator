@@ -1,7 +1,7 @@
 
 from mailbox import Message
 
-from mailanalysis.processors import ActivityOverTime
+from mailanalysis.processors.activity_over_time import ActivityOverTime
 
 
 def test_happy_path():
