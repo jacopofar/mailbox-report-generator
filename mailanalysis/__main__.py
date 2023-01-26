@@ -6,8 +6,7 @@ import mailanalysis
 from mailanalysis.processors import ReportHeader
 from mailanalysis.processors.activity_over_time import ActivityOverTime
 from mailanalysis.processors.dow_hour_heatmap import DowHourHeatmap
-from mailanalysis.processors.most_frequent_addresses import \
-    MostFrequentAddresses
+from mailanalysis.processors.most_frequent_addresses import MostFrequentAddresses
 
 REPORT_FILE = "report_mail.html"
 
