@@ -1,8 +1,10 @@
 import argparse
+import importlib.resources as pkg_resources
 import webbrowser
 from pathlib import Path
 
 import mailanalysis
+import mailanalysis.static_assets
 from mailanalysis.processors import ReportHeader
 from mailanalysis.processors.activity_over_time import ActivityOverTime
 from mailanalysis.processors.dow_hour_heatmap import DowHourHeatmap
@@ -31,23 +33,16 @@ def main() -> None:
         args.mbox_file,
         processors,
     )
-
+    header_text = pkg_resources.read_text(
+        mailanalysis.static_assets, "html_header.html"
+    )
+    footer_text = pkg_resources.read_text(
+        mailanalysis.static_assets, "html_header.html"
+    )
     with open(REPORT_FILE, "w") as f:
-        # mega ugly :) but enough to see the result and iterate
-        f.write(
-            """<html>
-<head><meta charset="utf-8" /></head>
-<body>
-    <div>
-
-    <script type="text/javascript">
-        window.PlotlyConfig = {MathJaxConfig: 'local'};
-    </script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        """
-        )
+        f.write(header_text)
         f.write(report_content)
-        f.write("</body></html>")
+        f.write(footer_text)
     target = f"file://{Path(REPORT_FILE).absolute()}"
     print(f"Report at {target}")
     webbrowser.open(target)
