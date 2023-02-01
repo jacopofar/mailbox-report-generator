@@ -38,7 +38,7 @@ def main() -> None:
         ReportHeader(args.mbox_file),
         DowHourHeatmap(),
         ActivityOverTime(),
-        MostFrequentAddresses(),
+        MostFrequentAddresses(most_common_n=25),
     ]
     report_content = mailanalysis.process_mbox(
         args.mbox_file,

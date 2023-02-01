@@ -8,10 +8,14 @@ from mailanalysis.processors import Processor
 
 
 class MostFrequentAddresses(Processor):
-    """Processor for the most frequent addresses."""
+    """Processor for the most frequent addresses.
 
-    def __init__(self) -> None:
+    To keep the chart readable only the 20 more frequent are shown
+    """
+
+    def __init__(self, most_common_n: int = 20) -> None:
         self.address_count: Counter[str] = Counter()
+        self.most_common_n = most_common_n
 
     def process(self, msg: Message) -> None:
         if msg["From"] is None or msg["To"] is None:
@@ -25,7 +29,15 @@ class MostFrequentAddresses(Processor):
 
     def report_snippet(self) -> str:
         # ignore address #1 assuming it is the mailbox owner
-        top_addresses = self.address_count.most_common(20)[1:]
+        top_addresses = self.address_count.most_common(self.most_common_n)[1:]
+        top_addresses.append(
+            (
+                "(others)",
+                sum(
+                    v for _, v in self.address_count.most_common()[self.most_common_n :]
+                ),
+            )
+        )
         labels, values = zip(*top_addresses)
         fig = go.Figure(
             data=go.Pie(
