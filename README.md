@@ -4,8 +4,8 @@
 
 This is a script that analyzes an **mbox** mail export, such as the one provided by Google Takeout from a Gmail box, and produces a report on the content.
 
-![an heatmap representation of number of mail per day and hour](heatmap.png)
-![an interactive chart showing the mail activity per day](timeline.png)
+![an heatmap representation of number of mail per day and hour](https://raw.githubusercontent.com/jacopofar/mailbox-report-generator/main/heatmap.png)
+![an interactive chart showing the mail activity per day](https://raw.githubusercontent.com/jacopofar/mailbox-report-generator/main/timeline.png)
 
 ## Current reports
 
