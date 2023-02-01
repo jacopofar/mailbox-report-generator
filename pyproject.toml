@@ -1,7 +1,7 @@
 [project]
 name = "mailbox_report_generator"
 readme = "README.md"
-version = "0.1.2"
+version = "0.1.3"
 description = "Tool to analyze a mbox mail dump"
 authors = [
     {name = "Jacopo Farina", email = "jacopo1.farina@gmail.com"},
