@@ -1,4 +1,4 @@
 # to generate the charts
 plotly==5.13.0
 # to show a nice progress bar
-tqdm==4.64.1
+tqdm==4.66.3
